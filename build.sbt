@@ -1,7 +1,7 @@
 import sbtcrossproject.crossProject
 
 scalaVersion in ThisBuild := "2.11.11"
-crossScalaVersions in ThisBuild := Seq("2.10.6", "2.11.11", "2.12.3", "2.13.0-M3")
+crossScalaVersions in ThisBuild := Seq("2.10.6", "2.11.11", "2.12.3", "2.13.0-M4")
 scalaJSUseRhino in ThisBuild := true
 organization in ThisBuild := "org.scalamock"
 licenses in ThisBuild := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
@@ -14,13 +14,13 @@ developers in ThisBuild := List(
 )
 homepage in ThisBuild := Some(url("http://scalamock.org/"))
 
-lazy val scalatest = "org.scalatest" %% "scalatest" % "3.0.5-M1"
+lazy val scalatest = "org.scalatest" %% "scalatest" % "3.0.6-SNAP1"
 lazy val specs2 = Def.setting {
   val v = CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, 10)) =>
       "3.9.1" // specs2 4.x does not support Scala 2.10
     case _ =>
-      "4.0.2"
+      "4.3.2"
   }
   "org.specs2" %% "specs2-core" % v
 }
@@ -34,6 +34,14 @@ lazy val quasiquotes = libraryDependencies ++= {
 }
 
 val commonSettings = Defaults.coreDefaultSettings ++ Seq(
+  unmanagedSourceDirectories in Compile ++= {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2L, minor)) =>
+        Some(baseDirectory.value.getParentFile / s"shared/src/main/scala-2.$minor")
+      case _ =>
+        None
+    }
+  },
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xcheckinit",
     "-target:jvm-" + (if (scalaVersion.value < "2.11") "1.7" else "1.8"))
 )
