@@ -1,7 +1,7 @@
 import sbtcrossproject.crossProject
 
 scalaVersion in ThisBuild := "2.11.12"
-crossScalaVersions in ThisBuild := Seq("2.10.7", "2.11.12", "2.12.6", "2.13.0-M3")
+crossScalaVersions in ThisBuild := Seq("2.10.7", "2.11.12", "2.12.6", "2.13.0-M4")
 scalaJSUseRhino in ThisBuild := true
 organization in ThisBuild := "org.scalamock"
 licenses in ThisBuild := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
@@ -14,13 +14,13 @@ developers in ThisBuild := List(
 )
 homepage in ThisBuild := Some(url("http://scalamock.org/"))
 
-lazy val scalatest = "org.scalatest" %% "scalatest" % "3.0.5-M1"
+lazy val scalatest = "org.scalatest" %% "scalatest" % "3.0.6-SNAP1"
 lazy val specs2 = Def.setting {
   val v = CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, 10)) =>
       "3.9.1" // specs2 4.x does not support Scala 2.10
     case _ =>
-      "4.0.2"
+      "4.3.2"
   }
   "org.specs2" %% "specs2-core" % v
 }
